@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
         type = "Federated"
 
         identifiers = [
-          "arn:aws:iam::${local.aws_account_id}:oidc-provider/${statement.url}"
+          "arn:aws:iam::${local.aws_account_id}:oidc-provider/${statement.value.url}"
         ]
       }
 
@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
         for_each = length(var.oidc_fully_qualified_subjects) > 0 ? [1] : []
         content {
           test     = "StringEquals"
-          variable = "${statement.url}:sub"
+          variable = "${statement.value.url}:sub"
           values   = var.oidc_fully_qualified_subjects
         }
       }
@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
         for_each = length(var.oidc_subjects_with_wildcards) > 0 ? [1] : []
         content {
           test     = "StringLike"
-          variable = "${statement.url}:sub"
+          variable = "${statement.value.url}:sub"
           values   = var.oidc_subjects_with_wildcards
         }
       }
