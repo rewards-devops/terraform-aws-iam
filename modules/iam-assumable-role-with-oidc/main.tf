@@ -8,7 +8,9 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
   count = var.create_role ? 1 : 0
 
   dynamic "statement" {
-    for_each = var.provider_urls
+    for_each = [for url in var.provider_urls: {
+      url   = url
+    }]
     content {
       effect   = "Allow"
       actions  = ["sts:AssumeRoleWithWebIdentity"]
@@ -16,7 +18,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
         type = "Federated"
 
         identifiers = [
-          "arn:aws:iam::${local.aws_account_id}:oidc-provider/${each.value}"
+          "arn:aws:iam::${local.aws_account_id}:oidc-provider/${statement.url}"
         ]
       }
 
@@ -24,7 +26,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
         for_each = length(var.oidc_fully_qualified_subjects) > 0 ? [1] : []
         content {
           test     = "StringEquals"
-          variable = "${each.value}:sub"
+          variable = "${statement.url}:sub"
           values   = var.oidc_fully_qualified_subjects
         }
       }
