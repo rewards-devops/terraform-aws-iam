@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
         for_each = length(var.oidc_subjects_with_wildcards) > 0 ? [1] : []
         content {
           test     = "StringLike"
-          variable = "${each.value}:sub"
+          variable = "${statement.url}:sub"
           values   = var.oidc_subjects_with_wildcards
         }
       }
