@@ -9,32 +9,34 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
 
   dynamic "statement" {
     for_each = var.provider_urls
-    effect   = "Allow"
-    actions  = ["sts:AssumeRoleWithWebIdentity"]
-    principals {
-      type = "Federated"
+    content {
+      effect   = "Allow"
+      actions  = ["sts:AssumeRoleWithWebIdentity"]
+      principals {
+        type = "Federated"
 
-      identifiers = [
-        "arn:aws:iam::${local.aws_account_id}:oidc-provider/${each.value}"
-      ]
-    }
-
-    dynamic "condition" {
-      for_each = length(var.oidc_fully_qualified_subjects) > 0 ? [1] : []
-      content {
-        test     = "StringEquals"
-        variable = "${each.value}:sub"
-        values   = var.oidc_fully_qualified_subjects
+        identifiers = [
+          "arn:aws:iam::${local.aws_account_id}:oidc-provider/${each.value}"
+        ]
       }
-    }
+
+      dynamic "condition" {
+        for_each = length(var.oidc_fully_qualified_subjects) > 0 ? [1] : []
+        content {
+          test     = "StringEquals"
+          variable = "${each.value}:sub"
+          values   = var.oidc_fully_qualified_subjects
+        }
+      }
 
 
-    dynamic "condition" {
-      for_each = length(var.oidc_subjects_with_wildcards) > 0 ? [1] : []
-      content {
-        test     = "StringLike"
-        variable = "${each.value}:sub"
-        values   = var.oidc_subjects_with_wildcards
+      dynamic "condition" {
+        for_each = length(var.oidc_subjects_with_wildcards) > 0 ? [1] : []
+        content {
+          test     = "StringLike"
+          variable = "${each.value}:sub"
+          values   = var.oidc_subjects_with_wildcards
+        }
       }
     }
   }
