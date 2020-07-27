@@ -7,16 +7,15 @@ data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "assume_role_with_oidc" {
   count = var.create_role ? 1 : 0
 
-  statement {
-    effect = "Allow"
-
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-
+  dynamic "statement" {
+    for_each = provider_urls
+    effect   = "Allow"
+    actions  = ["sts:AssumeRoleWithWebIdentity"]
     principals {
       type = "Federated"
 
       identifiers = [
-        "arn:aws:iam::${local.aws_account_id}:oidc-provider/${var.provider_url}"
+        "arn:aws:iam::${local.aws_account_id}:oidc-provider/${each.value}"
       ]
     }
 
@@ -24,7 +23,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
       for_each = length(var.oidc_fully_qualified_subjects) > 0 ? [1] : []
       content {
         test     = "StringEquals"
-        variable = "${var.provider_url}:sub"
+        variable = "${each.value}:sub"
         values   = var.oidc_fully_qualified_subjects
       }
     }
@@ -34,7 +33,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
       for_each = length(var.oidc_subjects_with_wildcards) > 0 ? [1] : []
       content {
         test     = "StringLike"
-        variable = "${var.provider_url}:sub"
+        variable = "${each.value}:sub"
         values   = var.oidc_subjects_with_wildcards
       }
     }

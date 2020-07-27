@@ -9,6 +9,12 @@ variable "provider_url" {
   type        = string
 }
 
+variable "provider_urls" {
+  description = "List URL of the OIDC Provider"
+  type        = list(string)
+  default     = []
+}
+
 variable "aws_account_id" {
   description = "The AWS account ID where the OIDC provider lives, leave empty to use the account fo the AWS provider"
   type        = string
