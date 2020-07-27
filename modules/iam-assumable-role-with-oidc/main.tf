@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
   count = var.create_role ? 1 : 0
 
   dynamic "statement" {
-    for_each = provider_urls
+    for_each = var.provider_urls
     effect   = "Allow"
     actions  = ["sts:AssumeRoleWithWebIdentity"]
     principals {
