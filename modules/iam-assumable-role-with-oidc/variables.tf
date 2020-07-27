@@ -7,6 +7,7 @@ variable "create_role" {
 variable "provider_url" {
   description = "URL of the OIDC Provider"
   type        = string
+  default     = ""
 }
 
 variable "provider_urls" {
