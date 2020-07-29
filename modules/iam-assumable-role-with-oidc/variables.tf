@@ -7,6 +7,13 @@ variable "create_role" {
 variable "provider_url" {
   description = "URL of the OIDC Provider"
   type        = string
+  default     = ""
+}
+
+variable "provider_urls" {
+  description = "List URL of the OIDC Provider"
+  type        = list(string)
+  default     = []
 }
 
 variable "aws_account_id" {
