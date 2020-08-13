@@ -82,6 +82,29 @@ module "iam_assumable_role_with_oidc" {
   ]
 }
 ```
+`iam-assumable-role-with-oidc with multiple provider(cluster)`:
+```hcl
+module "iam_assumable_role_with_oidc" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version = "~> 2.0"
+
+  create_role = true
+
+  role_name = "role-with-oidc"
+
+  tags = {
+    Role = "role-with-oidc"
+  }
+
+  provider_urls = ["oidc.eks.eu-west-1.amazonaws.com/id/BA9E170D464AF7B92084EF72A69B9DC8", "oidc.eks.eu-west-1.amazonaws.com/id/LKJFCDFDFDFDSAWLLJM084EF72A69B9DC8" ]
+
+  role_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+  ]
+}
+```
+
+
 
 `iam-assumable-roles`:
 ```hcl
