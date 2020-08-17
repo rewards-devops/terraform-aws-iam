@@ -64,7 +64,7 @@ module "iam_assumable_role" {
 `iam-assumable-role-with-oidc`:
 ```hcl
 module "iam_assumable_role_with_oidc" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  source = "github.com/rewards-devops/terraform-aws-iam//modules/iam-assumable-role-with-oidc?ref=master"
   version = "~> 2.0"
 
   create_role = true
@@ -85,7 +85,7 @@ module "iam_assumable_role_with_oidc" {
 `iam-assumable-role-with-oidc with multiple provider(cluster)`:
 ```hcl
 module "iam_assumable_role_with_oidc" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  source = "github.com/rewards-devops/terraform-aws-iam//modules/iam-assumable-role-with-oidc?ref=master"
   version = "~> 2.0"
 
   create_role = true
