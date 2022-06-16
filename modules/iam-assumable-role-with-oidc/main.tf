@@ -8,12 +8,12 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
   count = var.create_role ? 1 : 0
 
   dynamic "statement" {
-    for_each = [for url in var.provider_urls: {
-      url   = url
+    for_each = [for url in var.provider_urls : {
+      url = url
     }]
     content {
-      effect   = "Allow"
-      actions  = ["sts:AssumeRoleWithWebIdentity"]
+      effect  = "Allow"
+      actions = ["sts:AssumeRoleWithWebIdentity"]
       principals {
         type = "Federated"
 
