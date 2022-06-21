@@ -11,14 +11,14 @@ This module supports IAM Roles for kubernetes service accounts as described in t
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.6 |
-| aws | ~> 2.23 |
+| terraform | ~> 1.2  |
+| aws | ~> 4.0  |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | ~> 2.23 |
+| aws | ~> 4.0  |
 
 ## Inputs
 
